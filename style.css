@@ -25,6 +25,7 @@ header{
     background-color: black;
     top:0;
     border-bottom: 3px solid goldenrod;
+    z-index: 999;
 }
 
 main{
@@ -35,6 +36,7 @@ main{
     align-items: center;
     flex-direction: column;
     position: relative;
+    overflow: hidden;
 }
 
 input{
@@ -115,7 +117,7 @@ p{
 #action-panel{
     width: 90%;
     background-color: white;
-    height: 200px;
+    min-height: 200px;
     display: flex;
     justify-content: space-between;
     align-items: center;
