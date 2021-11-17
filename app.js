@@ -1,8 +1,9 @@
+import { attackBtn } from "./gameLogic.js";
 import { monsterArray } from "./monsters.js"
 import { players } from "./playerCharacter.js";
 import { populator } from "./populateGmMonsters.js"
 
-const gmAddBtn = document.getElementById('attack')
+const gmAttackBtn = document.getElementById('attack')
 const characterSelection = document.getElementById(`chooser-id`);
 const archer = document.getElementById(`selected-01`);
 const barbarian = document.getElementById(`selected-02`);
@@ -11,14 +12,16 @@ const cleric = document.getElementById(`selected-04`);
 const valkyrie = document.getElementById(`selected-05`);
 const charPick = document.getElementById(`pick-char-button`);
 
+let lastMonsterPick;
 let lastPick;
 
 const apiUrl = 'https://gist.githubusercontent.com/tkfu/9819e4ac6d529e225e9fc58b358c3479/raw/d4df8804c25a662efc42936db60cfbc0a5b19db8/srd_5e_monsters.json'
 
 let fullMonsterArr = await monsterArray(apiUrl)
 
-gmAddBtn.addEventListener('click', () => {
-    populator(fullMonsterArr);
+gmAttackBtn.addEventListener('click', () => {
+    console.log(lastMonsterPick)
+    attackBtn(lastPick, lastMonsterPick)
 })
 
 archer.addEventListener('click', () => {
@@ -77,10 +80,6 @@ valkyrie.addEventListener('click', () => {
     }
 });
 
-// window.onload = function() {
-//     characterSelection.classList.remove(`visibility`);
-// }
-
 const playerName = document.getElementById('player-name')
 const playerhp = document.getElementById('player-hp')
 const playerImage = document.getElementById('player-image')
@@ -90,6 +89,8 @@ charPick.addEventListener('click', () => {
     characterSelection.classList.add('visibility')
     playerName.textContent = name
     playerSetter(name)
+    // attackBtn(name.toLowerCase())
+    populator(fullMonsterArr);
 });
 
 function picker(playerClass){
@@ -118,3 +119,34 @@ const playerSetter = (lastPick) => {
         playerhp.textContent = players[4].hp
     }
 }
+
+const monster1 = document.getElementById('monster-01')
+const monster2 = document.getElementById('monster-02')
+const monster3 = document.getElementById('monster-03')
+const monsters = document.getElementsByClassName('monster')
+
+const monsterSelected = (num) => {
+    if (!lastMonsterPick){
+        monsters[num].classList.add('is-selected'); 
+        monsterPicker(monsters[num]);
+        
+    } else {
+        lastMonsterPick.classList.remove('is-selected');
+        monsters[num].classList.add('is-selected'); 
+        monsterPicker(monsters[num]);
+    }
+}
+
+function monsterPicker(monsterClass){
+    lastMonsterPick = monsterClass;
+}
+
+monster1.addEventListener('click', () => {
+    monsterSelected(0)
+})
+monster2.addEventListener('click', () => {
+    monsterSelected(1)
+})
+monster3.addEventListener('click', () => {
+    monsterSelected(2)
+})
