@@ -15,7 +15,7 @@ export const populator = async (fullMonsterArr) => {
 
     for (let i = 0; i < 3; i++) {
         monsterNames[i].textContent = fullMonsterArr[i].name
-
+        // console.log(fullMonsterArr[i].img_url);
         monsterImage[i].src = fullMonsterArr[i].img_url
     }
 

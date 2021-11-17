@@ -1,4 +1,5 @@
 import { monsterArray } from "./monsters.js"
+import { players } from "./playerCharacter.js";
 import { populator } from "./populateGmMonsters.js"
 
 const gmAddBtn = document.getElementById('attack')
@@ -9,6 +10,7 @@ const warlock = document.getElementById(`selected-03`);
 const cleric = document.getElementById(`selected-04`);
 const valkyrie = document.getElementById(`selected-05`);
 const charPick = document.getElementById(`pick-char-button`);
+
 let lastPick;
 
 const apiUrl = 'https://gist.githubusercontent.com/tkfu/9819e4ac6d529e225e9fc58b358c3479/raw/d4df8804c25a662efc42936db60cfbc0a5b19db8/srd_5e_monsters.json'
@@ -79,8 +81,40 @@ valkyrie.addEventListener('click', () => {
 //     characterSelection.classList.remove(`visibility`);
 // }
 
-charPick.addEventListener('click', () => {console.log('hi')});
+const playerName = document.getElementById('player-name')
+const playerhp = document.getElementById('player-hp')
+const playerImage = document.getElementById('player-image')
+
+charPick.addEventListener('click', () => {
+    let name = lastPick.children[0].innerText
+    characterSelection.classList.add('visibility')
+    playerName.textContent = name
+    playerSetter(name)
+});
 
 function picker(playerClass){
     lastPick = playerClass;
+}
+
+const playerSetter = (lastPick) => {
+    if(lastPick === 'Archer'){
+        playerImage.src = players[0].img_url
+        playerhp.textContent = players[0].hp
+    }
+    if(lastPick === 'Barbarian'){
+        playerImage.src = players[1].img_url
+        playerhp.textContent = players[1].hp
+    }
+    if(lastPick === 'Warlock'){
+        playerImage.src = players[2].img_url
+        playerhp.textContent = players[2].hp
+    }
+    if(lastPick === 'Cleric'){
+        playerImage.src = players[3].img_url
+        playerhp.textContent = players[3].hp
+    }
+    if(lastPick === 'Valkyrie'){
+        playerImage.src = players[4].img_url
+        playerhp.textContent = players[4].hp
+    }
 }
