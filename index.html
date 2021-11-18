@@ -7,6 +7,9 @@
     <title>Document</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="./character-picker.css">
+    <link rel="stylesheet" href="./you-win.css">
+    <link rel="stylesheet" href="./you-lose.css">
+    <link rel="stylesheet" href="./rules.css">
 </head>
 <body>
     <header>
@@ -68,8 +71,8 @@
                 combat panel
             </div>
             <div class="combat-text" id="combat-text">
-                <p>:>> <span class="player-attack">Your <span class="bold" id="p-char">Archer's</span> piercing attack does <span class="bold" id="p-damage">9</span> damage to enemy <span class="bold" id="p-enemy">Pit Fiend</span>.</span></p>
-                <p>:>> <span class="monster-attack">Enemy <span class="bold" id="e-char">Xenomorph's</span> bite attack hits your <span class="bold" id="e-enemy">Archer</span> for <span class="bold" id="e-damage">12</span> damage.</span></p>
+                <p class="player-attack">:>> <span">Your <span class="bold" id="p-char">Archer's</span> piercing attack does <span class="bold" id="p-damage">9</span> damage to enemy <span class="bold" id="p-enemy">Pit Fiend</span>.</span></p>
+                <p class="monster-attack">:>> <span>Enemy <span class="bold" id="e-char">Xenomorph's</span> bite attack hits your <span class="bold" id="e-enemy">Archer</span> for <span class="bold" id="e-damage">12</span> damage.</span></p>
             </div>
         </div>
         <!-- player monster team -->
@@ -104,7 +107,7 @@
             </div>
         </div>
 
-        <section class="character-chooser" id="chooser-id">
+        <section class="character-chooser visibility" id="chooser-id">
             <div class="chooser">
                 <div class="character-panel">
                     <div class="char" id="selected-01">
@@ -130,6 +133,39 @@
                     </div>
                 </div>
                 <input type="button" id="pick-char-button" value="Choose Your Hero">
+            </div>
+        </section>
+        <section class="you-win visibility" id="you-win">
+            <div class="you-win-wrapper">
+                <div class="text-portion fade-in">
+                    YOU WIN!
+                    <!-- <audio autoplay >
+                        <source src="./assets/backgrounds/you-win-street-fighter.mp3" type="audio/mpeg">
+                    </audio> -->
+                </div>
+                <input type="button" id="win-play-again" value="Play Again?">
+            </div>
+        </section>
+        <section class="you-lose visibility" id="you-lose">
+            <div class="you-lose-wrapper">
+                <div class="text-portion fade-in">
+                    YOU LOSE!
+                    <!-- <audio autoplay >
+                        <source src="./assets/backgrounds/you-lose.mp3" type="audio/mpeg">
+                    </audio> -->
+                </div>
+                <input type="button" id="lose-play-again" value="Play Again?">
+            </div>
+        </section>
+        <section class="rules" id="rules">
+            <div class="rules-wrapper">
+                <div class="rules-text-portion">
+                    <p class="rules-text"><span class="rotate-span"><span class="rotate-number">1</span></span>Select a Hero.</p>
+                    <p class="rules-text"><span class="rotate-span"><span class="rotate-number">2</span></span>Choose an Enemy to Attack.</p>
+                    <p class="rules-text"><span class="rotate-span"><span class="rotate-number">3</span></span>Make and Attack or Heal action.</p>
+                    <p class="rules-text"><span class="rotate-span"><span class="rotate-number">4</span></span>Defeat your Enemies...Or Die Trying.</p>
+                </div>
+                <div id="close-x">X</div>
             </div>
         </section>
     </main>
