@@ -55,9 +55,9 @@ footer{
     border-top: 3px solid goldenrod;
 }
 
-p{
+/* p{
     line-height: 1.25rem;
-}
+} */
 
 #add-button-holder{
     padding: 0 50px;
@@ -288,10 +288,12 @@ p{
 
 .player-attack{
     color: blue;
+    line-height: 1.25rem;
 }
 
 .monster-attack{
     color: red;
+    line-height: 1.25rem;
 }
 
 .player-actions{
