@@ -5,8 +5,6 @@ const monsterHp1 = document.getElementById("monster-01-hp")
 const monsterHp2 = document.getElementById("monster-02-hp")
 const monsterHp3 = document.getElementById("monster-03-hp")
 
-let hp;
-
 const monsterHpArr = [monsterHp1, monsterHp2, monsterHp3]
 
 const playerAttackValue = (name) => {
@@ -91,7 +89,7 @@ const willAttack = (playerAttackRoll, playerDamage, monsterDefenseRoll, monsterN
 
 const willDefend = (playerDefenseRoll, monsterAttackRoll, monsterDamage, playerHP) => {
 
-    let HP = +playerHP.textContent
+    let HP = Number(playerHP.textContent);
 
     for (let i = 0; i < monsterAttackRoll.length; i++) {
         if (playerDefenseRoll[i] < monsterAttackRoll[i]){
