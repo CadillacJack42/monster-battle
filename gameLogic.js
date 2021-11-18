@@ -30,7 +30,6 @@ const playerAttackValue = (name) => {
             }
         }
     }
-    // console.log(name.children);
     return playerAttack
 }
 
@@ -53,13 +52,13 @@ export const attackBtn = (playerName, monsterName) => {
     let monsterDamage = monsterAttackValue(monsterHP)
     const playerHP = document.getElementById(`player-hp`);
     willAttack(playerAttackRoll, playerDamage, monsterDefenseRoll, monsterName)
-    willDefend(playerDefenseRoll, monsterAttackRoll, monsterDamage, playerHP);
+    willDefend(playerDefenseRoll, monsterAttackRoll, monsterDamage, playerHP, monsterHP);
 }
 
 function monsterAttackValue (monsterHP){
     let mAttackArr = [];
     for (let i = 0; i < monsterHP.length; i++) {
-        mAttackArr.push(Math.floor(Math.random() * (monsterHP[i] * .5)));   
+        mAttackArr.push(Math.floor(Math.random() * (monsterHP[i] * .2)));   
         //monster HP lowering causes monster damage to lower as well   
     }
     return mAttackArr;
@@ -81,22 +80,25 @@ const willAttack = (playerAttackRoll, playerDamage, monsterDefenseRoll, monsterN
             if (element === monsterName.children[0].textContent){
                 let j = Number(monsterHpArr[i].textContent)
                 let k = j - playerDamage();
+                if (k <= 0){
+                    k = 0;
+                }
                 monsterHpArr[i].textContent = k
             }
         }
     }
 }
 
-const willDefend = (playerDefenseRoll, monsterAttackRoll, monsterDamage, playerHP) => {
+const willDefend = (playerDefenseRoll, monsterAttackRoll, monsterDamage, playerHP, monsterHP) => {
 
     let HP = Number(playerHP.textContent);
 
     for (let i = 0; i < monsterAttackRoll.length; i++) {
-        if (playerDefenseRoll[i] < monsterAttackRoll[i]){
-            playerHP.textContent = HP - monsterDamage[i];
-            // console.log("monsterDamage " + monsterDamage[i]);
+        if (monsterHP[i] > 0){
+            if (playerDefenseRoll[i] < monsterAttackRoll[i]){
+                playerHP.textContent = HP - monsterDamage[i];
+                console.log(i);
+            }
         }
-        // console.log("HP " + HP);
-        // console.log("playerHP " + playerHP.textContent);
     }
 }
