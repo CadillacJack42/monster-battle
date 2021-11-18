@@ -20,7 +20,7 @@ const apiUrl = 'https://gist.githubusercontent.com/tkfu/9819e4ac6d529e225e9fc58b
 let fullMonsterArr = await monsterArray(apiUrl)
 
 gmAttackBtn.addEventListener('click', () => {
-    console.log(lastMonsterPick)
+    // console.log(lastMonsterPick)
     attackBtn(lastPick, lastMonsterPick)
 })
 
