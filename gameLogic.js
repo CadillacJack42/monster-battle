@@ -2,20 +2,19 @@ import { players } from "./playerCharacter.js";
 
 const monsters = document.getElementsByClassName('monster')
 
-// const monstersArray = []
-// for (let i = 0; i < monsters.length; i++) {
-//     const element = monsters[i].children[0].textContent;
-//     monstersArray.push(element)  
-// }
-
-
 const monsterHp1 = document.getElementById("monster-01-hp")
 const monsterHp2 = document.getElementById("monster-02-hp")
 const monsterHp3 = document.getElementById("monster-03-hp")
-
 const combatResults = document.getElementById('combat-text')
-
 const monsterHpArr = [monsterHp1, monsterHp2, monsterHp3]
+
+const youLose = document.getElementById('you-lose')
+const soundOfLosers = new Audio('./assets/backgrounds/you-lose.mp3');
+
+const youWin = document.getElementById('you-win')
+const soundOfSuccess = new Audio('./assets/backgrounds/you-win.mp3');
+
+
 
 const playerAttackValue = (name) => {
     let playerAttack;
@@ -52,16 +51,24 @@ const gameDice = () => {
     return var1
 }
 
-export const attackBtn = (playerName, monsterName) => {
+const winLoss = (playerHp, monsterHp) => {
+    console.log(monsterHp[0].textContent);
+    // monsterHp should be an array
+    playerHp = playerHp.textContent
+    if (playerHp <= 0 ) {
+        console.log('YOU DEAD');
+        youLose.classList.remove('visibility') 
+        soundOfLosers.play()
+    }
 
-    // const monsters = document.getElementsByClassName('monster')
+    if (+monsterHp[0].textContent === 0 && +monsterHp[1].textContent === 0 && +monsterHp[2].textContent === 0) {
+        youWin.classList.remove('visibility') 
+        soundOfSuccess.play()
+    }
+}
 
+export const attackBtn = (playerName, monsterName, num) => {
     const monstersArray = []
-    for (let i = 0; i < monsters.length; i++) {
-        const element = monsters[i].children[0].textContent;
-        monstersArray.push(element)  
-    }   
-
     let playerAttackRoll = gameDice()
     let playerDefenseRoll = gameDice()
     let playerDamage = playerAttackValue(playerName)
@@ -70,20 +77,34 @@ export const attackBtn = (playerName, monsterName) => {
     let monsterHP = monsterHPpopulate()
     let monsterDamage = monsterAttackValue(monsterHP)
     const playerHP = document.getElementById(`player-hp`);
-    // Line 75 stores the damage done during each iteration of combat
-    // If player attack fails, "false" is returned
+
+
+        for (let i = 0; i < monsters.length; i++) {
+            const element = monsters[i].children[0].textContent;
+            monstersArray.push(element)  
+        }
+    if (num === 1) {
     let checksCombatDamage = willAttack(playerAttackRoll, playerDamage, monsterDefenseRoll, monsterName)
     let checksDefense = willDefend(playerDefenseRoll, monsterAttackRoll, monsterDamage, playerHP, monsterHP);
-    combatPane(playerName, checksCombatDamage, checksDefense, monsterName, monstersArray, monsterDamage)
+    combatPane(playerName, checksCombatDamage, checksDefense, monsterName, monstersArray, monsterDamage, num)
+    } else {
+        let playerAttackRoll = [0, 0, 0]
+        let checksCombatDamage = willAttack(playerAttackRoll, playerDamage, monsterDefenseRoll, monsterName)
+        let checksDefense = willDefend(playerDefenseRoll, monsterAttackRoll, monsterDamage, playerHP, monsterHP);
+        console.log("Monster Roll: " + monsterAttackRoll);
+        console.log("Player Roll: " + playerDefenseRoll);
+        combatPane(playerName, checksCombatDamage, checksDefense, monsterName, monstersArray, monsterDamage, num)
+    }
+
+    winLoss(playerHP, monsterHpArr)
 }
 
 function monsterAttackValue (monsterHP){
     let mAttackArr = [];
     for (let i = 0; i < monsterHP.length; i++) {
-        mAttackArr.push(Math.floor(Math.random() * (monsterHP[i] * .2)));   
+        mAttackArr.push(Math.floor(Math.random() * (monsterHP[i] * .2)+ 1));   
         //monster HP lowering causes monster damage to lower as well   
     }
-    console.log(mAttackArr);
     return mAttackArr;
 }
 
@@ -113,6 +134,7 @@ const willAttack = (playerAttackRoll, playerDamage, monsterDefenseRoll, monsterN
                 let j = Number(monsterHpArr[i].textContent)
                 plyerDmg = playerDamage()
                 let k = j - plyerDmg;
+                
                 if (k <= 0){
                     k = 0;
                 }
@@ -125,15 +147,19 @@ const willAttack = (playerAttackRoll, playerDamage, monsterDefenseRoll, monsterN
     return plyerDmg
 }
 
-const willDefend = (playerDefenseRoll, monsterAttackRoll, monsterDamage, playerHP, monsterHP) => {
+const takeMyPoints = (playerHP, monsterDamage) => {
+    let blood = Number(playerHP) - Number(monsterDamage)
+    return blood
+}
 
+const willDefend = (playerDefenseRoll, monsterAttackRoll, monsterDamage, playerHP, monsterHP) => {
     let HP = Number(playerHP.textContent);
     let hitOrMiss = []
     for (let i = 0; i < monsterAttackRoll.length; i++) {
-        console.log('Monster roll array length: ' + monsterAttackRoll.length);
         if (monsterHP[i] > 0){
             if (playerDefenseRoll[i] < monsterAttackRoll[i]){
-                playerHP.textContent = HP - monsterDamage[i];
+                playerHP.textContent = takeMyPoints(HP, monsterDamage[i]);
+                HP = takeMyPoints(HP, monsterDamage[i])
                 hitOrMiss.push(true)
             } else {
                 hitOrMiss.push(false)
@@ -145,38 +171,36 @@ const willDefend = (playerDefenseRoll, monsterAttackRoll, monsterDamage, playerH
     return hitOrMiss
 }
 
-const combatPane = (playerName, checksCombatDamage, checksDefense, monsterName, monstersArray, monsterDamage) => {
-    console.log(monsterDamage);
-    
-    console.log("checks Defense: " + checksDefense);
+const combatPane = (playerName, checksCombatDamage, checksDefense, monsterName, monstersArray, monsterDamage, num) => {
     let name = playerName.children[0].textContent
     let characterDamage = checksCombatDamage
     let selectedMonster = monsterName.children[0].textContent
 
     let hit = `<p class="player-attack">:>> Your <span class="bold">${name}s</span> attack dealt <span class="bold">${characterDamage}</span> damage to enemy <span class="bold">${selectedMonster}</span></p>`
-    let miss = `<p class="player-attack">:>>Your attack against <span class="bold">${selectedMonster}</span> failed</p>`
+    let miss = `<p class="player-attack">:>> Your attack against <span class="bold">${selectedMonster}</span> failed</p>`
+    let heal = `<p class="player-attack">:>> Your <span class="bold">${name}</span> successfully healed for <span class="bold">10</span> HP`
+
+    if (num === 1) {
+        if (checksCombatDamage) {
+        combatResults.insertAdjacentHTML("beforeend", hit)
+        } else {
+            combatResults.insertAdjacentHTML("beforeend", miss)
+        }
+    } else {
+        combatResults.insertAdjacentHTML("beforeend", heal)
+    }
     
 
-    if (checksCombatDamage) {
-        combatResults.insertAdjacentHTML("beforeend", hit)
-    } else {
-        combatResults.insertAdjacentHTML("beforeend",miss)
-    }
-
     for (let i = 0; i < checksDefense.length; i++) {
-        console.log("monsters list: " + monstersArray[i]);
         let monsterHit = `<p class="monster-attack">:>><span class="bold">${monstersArray[i]}</span> attack dealt <span class="bold">${monsterDamage[i]}</span> damage</p>`
         let monsterMiss = `<p class="monster-attack">:>><span class="bold">${monstersArray[i]}</span> attack failed</p>`
         const element = checksDefense[i];
         if (element) {
         combatResults.insertAdjacentHTML("beforeend", monsterHit)
-    } else {
-        combatResults.insertAdjacentHTML("beforeend", monsterMiss)
+        } else {
+            combatResults.insertAdjacentHTML("beforeend", monsterMiss)
+        }
     }
-    }
-    
 
     
-
-
 }

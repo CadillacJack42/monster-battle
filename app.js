@@ -11,6 +11,12 @@ const warlock = document.getElementById(`selected-03`);
 const cleric = document.getElementById(`selected-04`);
 const valkyrie = document.getElementById(`selected-05`);
 const charPick = document.getElementById(`pick-char-button`);
+const rulesPane = document.getElementById('rules')
+const healBtn = document.getElementById('heal')
+const resetBtn = document.getElementsByClassName('play-again')
+const youWin = document.getElementById('you-win')
+const youLose = document.getElementById('you-lose')
+const combatText = document.getElementById('combat-text')
 
 let lastMonsterPick;
 let lastPick;
@@ -19,9 +25,47 @@ const apiUrl = 'https://gist.githubusercontent.com/tkfu/9819e4ac6d529e225e9fc58b
 
 let fullMonsterArr = await monsterArray(apiUrl)
 
+rulesPane.addEventListener('click', () => {
+    rulesPane.classList.add('visibility')
+    characterSelection.classList.remove('visibility')
+})
+
+
 gmAttackBtn.addEventListener('click', () => {
     // console.log(lastMonsterPick)
-    attackBtn(lastPick, lastMonsterPick)
+    attackBtn(lastPick, lastMonsterPick, 1)
+})
+
+healBtn.addEventListener('click', () => {
+    attackBtn(lastPick, lastMonsterPick, 2)
+    for (let i = 0; i < players.length; i++) {
+        const element = players[i].name;
+        if (element === lastPick.children[0].textContent.toLowerCase()) {
+            playerhp.textContent = Number(playerhp.textContent) + 10
+        }
+    }
+})
+
+const  newMonsterArray = async () => {
+    let newMonsterArr = await monsterArray(apiUrl)
+    populator(newMonsterArr)
+    fullMonsterArr = newMonsterArr
+}
+
+resetBtn[0].addEventListener('click', () => {
+    console.log("You clicked the reset btn");
+    youWin.classList.add('visibility')
+    characterSelection.classList.remove('visibility')
+    newMonsterArray()
+    combatText.innerHTML = '<div class="combat-text" id="combat-text"></div>'
+})
+resetBtn[1].addEventListener('click', () => {
+    console.log("You clicked the reset btn");
+    youLose.classList.add('visibility')
+    characterSelection.classList.remove('visibility')
+    newMonsterArray()
+    combatText.innerHTML = '<div class="combat-text" id="combat-text"></div>'
+
 })
 
 archer.addEventListener('click', () => {
