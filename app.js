@@ -58,6 +58,11 @@ resetBtn[0].addEventListener('click', () => {
     characterSelection.classList.remove('visibility')
     newMonsterArray()
     combatText.innerHTML = '<div class="combat-text" id="combat-text"></div>'
+    for (let i = 0; i < monsters.length; i++) {
+        const element = monsters[i];
+        element.classList.remove('visibility')
+        
+    }
 })
 resetBtn[1].addEventListener('click', () => {
     console.log("You clicked the reset btn");
@@ -65,7 +70,11 @@ resetBtn[1].addEventListener('click', () => {
     characterSelection.classList.remove('visibility')
     newMonsterArray()
     combatText.innerHTML = '<div class="combat-text" id="combat-text"></div>'
-
+    for (let i = 0; i < monsters.length; i++) {
+        const element = monsters[i];
+        element.classList.remove('visibility')
+        
+    }
 })
 
 archer.addEventListener('click', () => {
@@ -135,6 +144,7 @@ charPick.addEventListener('click', () => {
     playerSetter(name)
     // attackBtn(name.toLowerCase())
     populator(fullMonsterArr);
+    playerName.classList.add('player-name')
 });
 
 function picker(playerClass){

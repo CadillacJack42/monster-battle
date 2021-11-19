@@ -52,11 +52,9 @@ const gameDice = () => {
 }
 
 const winLoss = (playerHp, monsterHp) => {
-    console.log(monsterHp[0].textContent);
     // monsterHp should be an array
     playerHp = playerHp.textContent
     if (playerHp <= 0 ) {
-        console.log('YOU DEAD');
         youLose.classList.remove('visibility') 
         soundOfLosers.play()
     }
@@ -134,7 +132,6 @@ const willAttack = (playerAttackRoll, playerDamage, monsterDefenseRoll, monsterN
                 let j = Number(monsterHpArr[i].textContent)
                 plyerDmg = playerDamage()
                 let k = j - plyerDmg;
-                
                 if (k <= 0){
                     k = 0;
                 }
@@ -165,6 +162,7 @@ const willDefend = (playerDefenseRoll, monsterAttackRoll, monsterDamage, playerH
                 hitOrMiss.push(false)
             }
         } else {
+            monsters[i].classList.add('visibility')
             hitOrMiss.push(false)
         }
     }
